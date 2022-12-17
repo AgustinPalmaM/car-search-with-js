@@ -47,23 +47,27 @@ yearSelect.addEventListener('change', (e) => {
 
 minPriceSelect.addEventListener('change', (e) => {
   searchData.minPrice = e.target.value;
+  filterCar();
 })
 
 maxPriceSelect.addEventListener('change', (e) => {
   searchData.maxPrice = e.target.value;
+  filterCar();
 })
 
 doorsSelect.addEventListener('change', (e) => {
   searchData.doors = e.target.value;
+  filterCar();
 })
 
 transmissionSelect.addEventListener('change', (e) => {
   searchData.transmission = e.target.value;
+  filterCar();
 })
 
 colorSelect.addEventListener('change', (e) => {
   searchData.color = e.target.value;
-  console.log(searchData)
+  filterCar();
 })
 
 
@@ -102,8 +106,14 @@ function fillSelectYears() {
 }
 
 function filterCar() {
-  const resultFiltered = cars.filter( filterBrand ).filter( filterYear );
-  console.log(resultFiltered)
+  const resultFiltered =  cars.filter( filterBrand )
+                              .filter( filterYear )
+                              .filter( filterMinPrice )
+                              .filter( filterMaxPrice )
+                              .filter( filterDoors )
+                              .filter( filterTransmission )
+                              .filter( filterColor )
+  
   showCars(resultFiltered);
 }
 
@@ -120,6 +130,51 @@ function filterYear(car) {
   const { year } = searchData;
   if ( year ) {
     return car.year === parseInt(year)
+  }
+
+  return car
+}
+
+function filterMinPrice(car) {
+  const { minPrice } = searchData;
+  if ( minPrice ) {
+    return parseInt(minPrice) <= car.price 
+  }
+
+  return car
+}
+
+function filterMaxPrice(car) {
+  const { maxPrice } = searchData;
+  if ( maxPrice ) {
+    return parseInt(maxPrice) >= car.price 
+  }
+
+  return car
+}
+
+function filterDoors(car) {
+  const { doors } = searchData;
+  if ( doors ) {
+    return parseInt(doors) === car.doors
+  }
+
+  return car
+}
+
+function filterTransmission(car) {
+  const { transmission } = searchData;
+  if ( transmission ) {
+    return transmission === car.transmission
+  }
+
+  return car
+}
+
+function filterColor(car) {
+  const { color } = searchData;
+  if ( color ) {
+    return color === car.color
   }
 
   return car
